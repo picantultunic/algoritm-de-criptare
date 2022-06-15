@@ -1,7 +1,8 @@
 #include <iostream>
 #include <string.h>
+#include <string>
 #include <random>
-#include<time.h>
+#include <time.h>
 #include <string>
 #include <vector>
 #include <fstream>
@@ -289,53 +290,70 @@ char* decriptare(char* text){
 }
 int main()
 {
-
+    ifstream in("data.in");
+    ofstream out("data.out");
     srand(time(0));
     //"acesta este un mesaj de la bucuresti pentru dumneavoastra"
-    char text[]="razvan , sti cum poti sa faci bitset sa fie mai dinamic ? ca vreau sa fac un array de bitset pe baza unei variabile si imi zice ca nu ii o consanta";
     
-    char **mat,*textamestecat;
-    int n,ltext=strlen(text),stocat=0,nrpermutari;
+    char **mat,*textcipt;
+    int decizie;
     mat=new char*[20];
 
-    unsigned long long key=663874105088399729;//keygen();
+    unsigned long long key=0;//663874105088399729;//keygen();
     
-    unsigned long long kkey=key;
-    len=std::to_string(kkey).length();
-    keyvec=new short[len];
-
-    for(int i=len-1;i>=0;i--){
-        keyvec[i]=kkey%10;
-        kkey/=10;
-    }
+    
     // cout<<"inainte de toate aici am sa pun marimea textului "<<ltext<<endl<<"--__--__--__--__--__--__--__--__--"<<endl;
-    textamestecat=text;
-    textamestecat=criptare(textamestecat);
-    cout<<textamestecat<<"::"<<endl<<endl;
-    textamestecat=decriptare(textamestecat);
-    cout<<textamestecat<<endl;
-    // for(int i=0;i<20&&stocat<ltext;i++){
-    //     int k=rand()%(ltext/3)+1;
-    //     mat[i]=new char[k+2];
-    //     mat[i][0]=(char)k;
-    //     mat[i][k+1]='\0';
-    //     for(int j=0;j<k&&stocat+j<ltext;j++)
-    //         mat[i][j+1]=text[stocat+j];
-    //     stocat+=k;
-    //    // cout<<k<<endl;
-    // }
-    // for(int i=0;i<20;i++)
-    //     if(mat[i]!=nullptr)
-    //         cout<<mat[i]+1<<endl;
-    //     else{
-    //         n=i;
-    //         cout<<n<<endl;
-    //         break;
-    //     }
-    // cout<<"------"<<endl;
-    // for(int i=0;i<len;i++)
-    // cout<<keyvec[i];
-    // cout<<endl<<key<<endl;
-      
-    //for()
+    
+    cout<<"buna ziua , aceasta aplicatie este pentru criptat mesaje"<<endl;
+    cout<<endl<<"va rog sa urmariti urmatorii pasi:"<<endl;
+    cout<<"   acest program functioneaza pe baza de fisiere , asadar trebuie sa introduceti textul in fisier iar ce reiese in urma operatiuni v-a fi afisiat in fisierul de output"<<endl;
+    cout<<endl<<" ce doriti sa faceti ?\n1)criptare\n2)decriptare\ndecizie :";cin>>decizie;
+   
+    if(decizie==1){
+        cout<<"introduceti cheia (18 cifre), daca apasati enter fara cheie o sa se genereze una"<<endl;
+        cin>>key;
+        if(key==0){
+            key=keygen();
+           }else{
+               unsigned long long kkey=key;
+               len=std::to_string(kkey).length();
+               keyvec=new short[len];
+
+                for(int i=len-1;i>=0;i--){
+                    keyvec[i]=kkey%10;
+                    kkey/=10;
+                }
+            }
+
+        string data;
+        getline(in,data);
+        textcipt=new char[data.length()+1];
+        textcipt=(char*)data.c_str();
+        textcipt[data.length()]='\0';
+        textcipt=criptare(textcipt);
+        out<<textcipt;
+
+    }else if(decizie==2){
+        cout<<"introduceti cheia:";cin>>key;
+        unsigned long long kkey=key;
+               len=std::to_string(kkey).length();
+               keyvec=new short[len];
+
+                for(int i=len-1;i>=0;i--){
+                    keyvec[i]=kkey%10;
+                    kkey/=10;
+                }
+        
+        string data;
+        getline(in,data);
+        textcipt=new char[data.length()+1];
+        textcipt=(char*)data.c_str();
+        textcipt=decriptare(textcipt);
+        out<<textcipt;
+        // cout<<textcipt<<endl;
+    }else{
+        cout<<"ai gresit decizia , programul o sa se inchida"<<endl;
+    }
+    in.close();
+    out.close();
 }   
